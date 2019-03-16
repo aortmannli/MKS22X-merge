@@ -3,10 +3,10 @@ import java.io.*;
 public class Merge{
 
   public static void main(String[] args){
-    int[] a = {1,4,8};
+    int[] a = {1,4,8,2,5,8,9,17,0,18};
     int[] b = {3,5,9};
-    int[] array = merge(a,b);
-    System.out.println(Arrays.toString(array));
+    mergesortH(a);
+    System.out.println(Arrays.toString(a));
   }
   /*sort the array from least to greatest value. This is a wrapper function*/
   public static void mergesort(int[]data){
@@ -34,7 +34,20 @@ mergesort(data,lo,hi):
     return out;
   }
 
-  private static void mergesortH(int[] og, int a, int b){
-
+  private static void mergesortH(int[] data){
+      int mid = data.length/2;
+      int[] a = new int[mid];
+      for(int i =0; i < mid; i++){
+        a[i] = data[i];
+      }
+      int[]b = new int[data.length-mid];
+      for(int x = 0; x < b.length; x++){
+        for(int y = mid; y < data.length; y++){
+          b[x]=data[y];
+        }
+      }
+      mergesortH(a);
+      mergesortH(b);
+      data = merge(a,b);
   }
 }
