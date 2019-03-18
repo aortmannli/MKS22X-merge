@@ -50,7 +50,6 @@ public class Merge{
       else out[i]=b[b_idx++];
     }
     return out;
-
   }
 
   private static int[] mergesortH(int[] data){
@@ -73,6 +72,20 @@ public class Merge{
     int [] hold = mergesortH(data);
     for(int i = 0; i < data.length; i++){
       data[i]=hold[i];
+    }
+  }
+
+
+  private static int[] mergeO(int a, int b, int lo, int hi){
+    int[] out = new int[a+b];
+
+  }
+
+  private static void mergesortO(int[]data, int[]temp, int lo, int hi){
+    if(lo < hi){
+      int n = hi-lo;
+      if (n <= 1) return data;
+      int mid = n/2+start;
     }
   }
 
