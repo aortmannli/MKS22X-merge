@@ -37,8 +37,6 @@ public class Merge{
     }
   }
 
-
-
   private static int[] merge(int[]a, int[]b){
     int[] out = new int[a.length+ b.length];
     int a_idx= 0;
