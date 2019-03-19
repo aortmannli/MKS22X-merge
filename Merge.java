@@ -3,7 +3,7 @@ import java.io.*;
 public class Merge{
 
   public static void main(String[]args){
-    System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
+    /*System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
     int[]MAX_LIST = {1000000000,500,10};
     for(int MAX : MAX_LIST){
       for(int size = 31250; size < 2000001; size*=2){
@@ -34,9 +34,24 @@ public class Merge{
         System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
       }
       System.out.println();
-    }
+    }*/
+
+    int[] h = {2,423,575,356,32,1,4456,22,34,5,6,342,8,0,213,467,11456,4,355,6};
+    int[] g = insertionSort(h, 4,11);
+    printArray(g);
   }
 
+  public static void printArray(int ary[]){
+      int n = ary.length;
+
+      System.out.print("{");
+      for (int i=0; i<n; ++i){
+        if (i != n-1) System.out.print(ary[i]+", ");
+        else System.out.print(ary[i]+"");
+      }
+      System.out.print("}");
+      System.out.println();
+  }
 
 
   private static int[] merge(int[]a, int[]b){
@@ -75,18 +90,29 @@ public class Merge{
     }
   }
 
-
-  private static int[] mergeO(int a, int b, int lo, int hi){
-    int[] out = new int[a+b];
-
-  }
-
-  private static void mergesortO(int[]data, int[]temp, int lo, int hi){
-    if(lo < hi){
-      int n = hi-lo;
-      if (n <= 1) return data;
-      int mid = n/2+start;
+  public static int[] insertionSort(int[] in, int start, int end){
+    printArray(in);
+    int[] data = new int[end-start+1];
+    System.out.println(data.length);
+    for(int f = 0; f < data.length; f++){
+      for(int i = start; i < end; i++){
+        data[f]=in[i];
+      }
     }
-  }
+    printArray(data);
+    for(int i = 1; i < data.length; i++){
+      int current = data[i];
+      boolean sorted = false;
+      int idx = i-1;
+      while(!(idx < 0 || data[idx] < current)){
+       data[idx+1] = data[idx];
+       idx--;
+      }
+      data[idx+1] = current;
+    }
+    return data;
+}
+
+
 
 }
