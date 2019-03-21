@@ -1,9 +1,10 @@
 import java.util.*;
 import java.io.*;
 public class Merge{
+  public static int insertion = 100;
 
   public static void main(String[]args){
-    /*System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
+    System.out.println("Size\t\tMax Value\tmerge/builtin ratio ");
     int[]MAX_LIST = {1000000000,500,10};
     for(int MAX : MAX_LIST){
       for(int size = 31250; size < 2000001; size*=2){
@@ -34,29 +35,23 @@ public class Merge{
         System.out.println(size +"\t\t"+MAX+"\t"+1.0*qtime/btime);
       }
       System.out.println();
-    }*/
-
-    int[] h = {2,423,575,356,32,1,4456,22,34,5,6,342,8,0,213,467,11456,4,355,6};
-    int[] g = insertionSort(h, 4,11);
-    printArray(g);
+    }
   }
 
-<<<<<<< HEAD
-=======
-  public static void printArray(int ary[]){
-      int n = ary.length;
+
+  public static void printArray(int data[]){
+      int n = data.length;
 
       System.out.print("{");
       for (int i=0; i<n; ++i){
-        if (i != n-1) System.out.print(ary[i]+", ");
-        else System.out.print(ary[i]+"");
+        if (i != n-1) System.out.print(data[i]+", ");
+        else System.out.print(data[i]+"");
       }
       System.out.print("}");
       System.out.println();
   }
 
 
->>>>>>> 74f3b87f38ef131de4ed9416f7cf915c7a4d32a8
   private static int[] merge(int[]a, int[]b){
     int[] out = new int[a.length+ b.length];
     int a_idx= 0;
@@ -86,35 +81,100 @@ public class Merge{
       return merge(mergesortH(a),mergesortH(b));
   }
 
-  private static void mergesort(int[] data){
-    int [] hold = mergesortH(data);
-    for(int i = 0; i < data.length; i++){
-      data[i]=hold[i];
+  public static void mergesort(int[]data){
+    mergesortOpt(data);
+  }
+
+  public static void mergesortOpt(int[]data){
+    int[] hold = new int[data.length];
+    mergesortOpt(data, hold, 0, data.length - 1);
+  }
+
+  private static void mergesortOpt(int[] data, int[] hold, int start, int end){
+    int len = end - start + 1;
+    int pivot = (end + start) / 2;
+    if (len <= 1) return;
+    if (len <= 3){
+      insertionSort(data, start, end);
+    }
+    else{
+      mergesortOpt(data, hold, start, pivot);
+      mergesortOpt(data, hold, pivot + 1, end);
+      merge(data, hold, start, pivot + 1, end);
+      for (int i = 0; i < len; i++){
+        data[i + start] = hold[i];
+      }
     }
   }
 
-  public static int[] insertionSort(int[] in, int start, int end){
-    printArray(in);
-    int[] data = new int[end-start+1];
-    System.out.println(data.length);
-    for(int f = 0; f < data.length; f++){
-      for(int i = start; i < end; i++){
-        data[f]=in[i];
+  private static void merge(int[] data, int[] hold, int start, int pivot, int end){
+    int i1 = start;
+    int i2 = pivot;
+    int iout = 0;
+    while (i1 < pivot || i2 <= end) {
+      if (i1 >= pivot){
+         hold[iout] = data[i2];
+         i2++;
+       }
+      else if (i2 > end){
+        hold[iout] = data[i1];
+        i1++;
+      }
+      else if (data[i1] > data[i2]){
+        hold[iout] = data[i2];
+        i2++;
+      }
+      else {
+        hold[iout] = data[i1];
+        i1++;
+      }
+      iout++;
+    }
+  }
+
+  private static void mergesort(int[] data, int start, int end){
+      int len = end - start + 1;
+      int pivot = (end + start) / 2;
+      if (len <= 1) return;
+      if (len == 2){
+        if (data[start] > data[end]){
+          swap(data, start, end);
+        }
+      }
+      else{
+        int[] d1 = Arrays.copyOfRange(data, start, pivot + 1);
+        int[] d2 = Arrays.copyOfRange(data, pivot + 1, end + 1);
+        mergesort(d1);
+        mergesort(d2);
+        int[] merged = merge(d1, d2);
+        for (int i = 0; i < data.length; i++){
+          data[i] = merged[i];
+        }
       }
     }
-    printArray(data);
-    for(int i = 1; i < data.length; i++){
-      int current = data[i];
-      boolean sorted = false;
-      int idx = i-1;
-      while(!(idx < 0 || data[idx] < current)){
-       data[idx+1] = data[idx];
-       idx--;
-      }
-      data[idx+1] = current;
+
+
+
+    private static void swap(int[] data, int a, int b){
+      int temp = data[b];
+      data[b] = data[a];
+      data[a] = temp;
     }
-    return data;
-}
+
+    public static void insertionSort(int[] ary, int lo, int hi){
+      for (int i = lo + 1; i <= hi; i++){
+        int temp = ary[i];
+        if (ary[i - 1] > ary[i]){
+          int x = i - 1;
+          while (x > lo && ary[x - 1] > temp){
+            ary[x + 1] = ary[x];
+            x--;
+          }
+          ary[x + 1] = ary[x];
+          ary[x] = temp;
+        }
+      }
+  }
 
 
 
